@@ -206,7 +206,6 @@ fn 切片类型() {
 }
 
 fn 结构体() {
-    #[derive(Clone)]
     struct Site {
         domain: String,
         name: String,
