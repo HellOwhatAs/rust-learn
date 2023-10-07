@@ -1,3 +1,5 @@
+use std::io::Read;
+
 fn 输出到命令行() {
     let a = 123;
     println!("{{{}, {1}, {0}}}", a, 456);
@@ -274,11 +276,81 @@ fn 枚举类() {
 }
 
 mod second;
+mod third{
+    pub fn fib(x: i32) -> i32 {
+        if x < 2 {x} else {fib(x - 1) + fib(x - 2)}
+    }
+    pub use std::f64::consts::PI;
+}
+
 fn 组织管理() {
     use second::fib;
-    println!("{}", fib(100));
+    use third::fib as rfib;
+    println!("{}", fib(10));
+    println!("{}", rfib(10));
+    println!("{}", f64::cos(third::PI));
+}
+
+fn 错误处理() {
+    if false {
+        panic!("Never {}{}{}{}", 'H', 'e', 'r', 'e');
+    }
+    let f = std::fs::File::open("Cargo.toml");
+    let mut buf = String::new();
+    match f {
+        Ok(mut f) => {
+            f.read_to_string(&mut buf).expect("Failed to Read");
+        },
+        Err(e) => {
+            println!("Failed to Open: {}", e);
+            return;
+        }
+    }
+    let lines: Vec<&str> = buf.split('\n').collect();
+    for line in lines {
+        let line = line.trim();
+        if line.len() > 0 {
+            println!("{}", "\"".to_string() + &line.replace("\"", "\\\"") + "\"");
+        }
+    }
     {
-        println!("{}", f64::cos(std::f64::consts::PI));
+        fn error_happen() -> Result<i32, String> {
+            Err("Error".to_string())
+        }
+        fn error_recver() -> Result<i64, String> {
+            error_happen()?; // 可以在 Result 对象后添加 ? 操作符将同类的 Err 直接return出去
+            println!("Ok(20)");
+            Ok(20)
+        }
+        if let Err(msg) = error_recver() {
+            println!("{}", msg);
+        }
+    }
+    // kind
+    {
+        fn read_text_from_file(path: &str) -> Result<String, std::io::Error> {
+            let mut f = std::fs::File::open(path)?;
+            let mut s = String::new();
+            f.read_to_string(&mut s)?;
+            Ok(s)
+        }
+        fn func() {
+            let str_file = read_text_from_file("hello.txt");
+            match str_file {
+                Ok(s) => println!("{}", s),
+                Err(e) => {
+                    match e.kind() {
+                        std::io::ErrorKind::NotFound => {
+                            println!("No such file");
+                        },
+                        _ => {
+                            println!("Cannot read the file");
+                        }
+                    }
+                }
+            }
+        }
+        func()
     }
 }
 
@@ -295,4 +367,5 @@ fn main() {
     结构体();
     枚举类();
     组织管理();
+    错误处理();
 }
