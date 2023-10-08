@@ -353,6 +353,44 @@ fn 错误处理() {
     }
 }
 
+fn 泛型与特性() {
+    fn max_arr_t<T: std::cmp::Ord + Clone>(arr: &[T]) -> T {
+        let mut idx: usize = 0;
+        for i in 1..arr.len() {
+            idx = if arr[i] > arr[idx] {i} else {idx};
+        }
+        return arr[idx].clone();
+    }
+    println!("{}", max_arr_t(&[1, 2, 3, 4, 5, 4, 3, 2, 1]));
+    use std::fmt;
+    struct Point<T1, T2> {
+        x: T1,
+        y: T2
+    }
+    impl<T: std::ops::Add<Output = T> + Copy> Point<T, T> {
+        fn sum(&self) -> T {
+            return self.x + self.y;
+        }
+    }
+    let p = Point {x: 10, y: 20};
+    impl<T1: fmt::Display, T2: fmt::Display> fmt::Display for Point<T2, T1> {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "Point{{x: {}, y: {}}}", self.x, self.y)
+        }
+    }
+    println!("{}, {}", p, p.sum());
+    impl<T, U> Point<T, U> {
+        fn mixup<V, W>(self, other: Point<V, W>) -> Point<T, W> {
+            Point {
+                x: self.x,
+                y: other.y,
+            }
+        }
+    }
+    println!("{}", p.mixup(Point { x: "Hello", y: "World" }));
+    
+}
+
 fn main() {
     输出到命令行();
     基础语法();
@@ -367,4 +405,5 @@ fn main() {
     枚举类();
     组织管理();
     错误处理();
+    泛型与特性();
 }
