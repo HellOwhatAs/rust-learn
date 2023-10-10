@@ -380,14 +380,16 @@ fn 泛型与特性() {
     }
     println!("{}, {}", p, p.sum());
     impl<T, U> Point<T, U> {
-        fn mixup<V, W>(self, other: Point<V, W>) -> Point<T, W> {
+        fn mixup<V, W>(&self, other: &Point<V, W>) -> Point<T, W> 
+            where T: Clone, U: Clone, V: Clone, W: Clone {
             Point {
-                x: self.x,
-                y: other.y,
+                x: self.x.clone(),
+                y: other.y.clone(),
             }
         }
     }
-    println!("{}", p.mixup(Point { x: "Hello", y: "World" }));
+    println!("{}", p.mixup(&Point { x: "Hello", y: "World" }));
+    println!("{}", Point::mixup(&Point { x: "Hello", y: "World" }, &p));
     
 }
 
