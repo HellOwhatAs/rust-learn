@@ -453,7 +453,26 @@ fn 集合与字符串() {
         let sub_raw_s = &raw_s[5..8];
         println!("{:?}", sub_raw_s);
     }
-    todo!();
+    {
+        let mut dict = std::collections::HashMap::new();
+        for idx in 0..v1.len() {
+            dict.insert(v1[idx], idx);
+        }
+        for item in &mut dict {
+            *item.1 *= 10;
+        }
+        for item in &dict {
+            println!("{} -> {}", item.0, item.1);
+        }
+        println!("{}", dict.contains_key(&64));
+        let mut letters = std::collections::HashMap::new();
+        for ch in "a\nshort treatise on\nfungi".chars() {
+            letters.entry(ch).and_modify(|counter| *counter += 1).or_insert(1);
+        }
+        for item in &letters {
+            println!("{} -> {}", format!("\"{}\"", item.0.to_string().escape_default()), item.1);
+        }
+    }
 }
 
 fn main() {
