@@ -410,6 +410,44 @@ fn 生命周期() {
     println!("{}", r);
 }
 
+fn 文件与io() {
+    let args: Vec<String> = std::env::args().collect();
+    for arg in &args {
+        println!("{};", &arg);
+    }
+    let exe = &args[0];
+    let tmp = std::env::current_dir().unwrap();
+    let tmp = tmp.to_str().unwrap();
+    println!("{}, {}", *exe, tmp);
+    todo!();
+}
+
+fn 集合与字符串() {
+    let mut v1: Vec<i32> = vec![1, 2, 4, 8];
+    let v2: Vec<i32> = vec![16, 32, 64];
+    let mut v3 = &mut v2.clone();
+    v1.append(&mut v3);
+    for i in &v1 {
+        print!("{}, ", i);
+    }
+    println!();
+    {
+        let raw_s = "hello你好";
+        let s: Vec<char> = raw_s.chars().collect();
+        for c in &s {
+            print!("{}", format!("{}, ", c));
+        }
+        println!();
+        for i in 0..s.len() {
+            print!("{}, ", s[i]);
+        }
+        println!();
+        let sub_raw_s = &raw_s[5..8];
+        println!("{:?}", sub_raw_s);
+    }
+    todo!();
+}
+
 fn main() {
     输出到命令行();
     基础语法();
@@ -426,4 +464,6 @@ fn main() {
     错误处理();
     泛型与特性();
     生命周期();
+    文件与io();
+    集合与字符串();
 }
