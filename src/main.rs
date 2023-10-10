@@ -419,7 +419,15 @@ fn 文件与io() {
     let tmp = std::env::current_dir().unwrap();
     let tmp = tmp.to_str().unwrap();
     println!("{}, {}", *exe, tmp);
-    todo!();
+    let content = std::fs::read_to_string("./Cargo.toml").unwrap_or("Failed to read".to_owned());
+    let lines: Vec<&str> = content.split("\n").map(|s| {s.trim()}).filter(|s|{(*s).len() > 0}).collect();
+    for line in lines {
+        println!("> {}", line);
+    }
+    std::fs::write(
+        "README.md",
+        "# rust-learn\nfolling https://www.runoob.com/rust/rust-tutorial.html"
+    ).unwrap();
 }
 
 fn 集合与字符串() {
