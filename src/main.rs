@@ -390,7 +390,24 @@ fn 泛型与特性() {
     }
     println!("{}", p.mixup(&Point { x: "Hello", y: "World" }));
     println!("{}", Point::mixup(&Point { x: "Hello", y: "World" }, &p));
-    
+}
+
+fn 生命周期() {
+    fn longer<'a>(s1: &'a str, s2: &'a str) -> &'a str {
+        if s2.len() > s1.len() {
+            s2
+        }
+        else {
+            s1
+        }
+    }
+    let r;
+    {
+        let s1 = "Hello";
+        let s2 = "World!";
+        r = longer(s1, s2);
+    }
+    println!("{}", r);
 }
 
 fn main() {
@@ -408,4 +425,5 @@ fn main() {
     组织管理();
     错误处理();
     泛型与特性();
+    生命周期();
 }
