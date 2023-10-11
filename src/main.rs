@@ -475,6 +475,52 @@ fn 集合与字符串() {
     }
 }
 
+fn 面向对象() {
+    mod disjointset{
+        pub struct DisjointSet {
+            arr: Vec<i32>
+        }
+        impl DisjointSet {
+            pub fn new(length: i32) -> DisjointSet {
+                return DisjointSet{arr: vec![-1; length as usize]};
+            }
+            pub fn query(&mut self, x: i32) -> i32 {
+                if self.arr[x as usize] < 0 {return x;}
+                self.arr[x as usize] = self.query(self.arr[x as usize]);
+                return self.arr[x as usize];
+            }
+            pub fn join(&mut self, a: i32, b: i32) {
+                let mut ia = self.query(a);
+                let mut ib = self.query(b);
+                if ia == ib {return;}
+                if ia > ib {std::mem::swap(&mut ia, &mut ib);}
+                self.arr[ia as usize] += self.arr[ib as usize];
+                self.arr[ib as usize] = ia;
+            }
+        }
+        impl std::fmt::Display for DisjointSet {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                let mut ret = "DisjointSet(".to_string();
+                for i in 0..self.arr.len() {
+                    ret.push_str(&i.to_string());
+                    ret.push_str(": ");
+                    ret.push_str(&self.arr[i as usize].to_string());
+                    ret.push_str(", ");
+                }
+                ret.push(')');
+                return write!(f, "{}", &ret);
+            }
+        }
+    }
+    {
+        let mut djs = disjointset::DisjointSet::new(10);
+        djs.join(0, 1);
+        djs.join(5, 9);
+        djs.join(0, 9);
+        println!("{}, {}", djs.query(1) == djs.query(5), djs);
+    }
+}
+
 fn main() {
     输出到命令行();
     基础语法();
@@ -493,4 +539,5 @@ fn main() {
     生命周期();
     文件与io();
     集合与字符串();
+    面向对象();
 }
