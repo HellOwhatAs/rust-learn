@@ -521,6 +521,42 @@ fn 面向对象() {
     }
 }
 
+fn 并发编程() {
+    let s = "hello".to_string();
+    let mut handles = vec![];
+    for i in 0..10 {
+        let sacrifice = s.clone();
+        let handle = std::thread::spawn(move || {
+            for _j in 0..10 {
+                print!("{} {} ", sacrifice, i);
+            }
+        });
+        handles.push(handle);
+    }
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    println!("{}", s);
+    {
+        let n_thread = 16;
+        let total = 1000000000;
+        let mut rx = vec![];
+        for idx in 0..n_thread {
+            let (tx0, rx0) = std::sync::mpsc::channel();
+            rx.push(rx0);
+            std::thread::spawn(move || {
+                let mut res: i128 = 0;
+                for i in ((total / n_thread) * idx)..((total / n_thread) * (idx + 1)) {
+                    res += i * i;
+                }
+                tx0.send(res.to_string()).unwrap();
+            });
+        }
+        let ress: i128 = rx.iter().map(|x|{x.recv().unwrap().parse::<i128>().unwrap()}).sum();
+        println!("{}", ress);
+    }
+}
+
 fn main() {
     输出到命令行();
     基础语法();
@@ -540,4 +576,5 @@ fn main() {
     文件与io();
     集合与字符串();
     面向对象();
+    并发编程();
 }
