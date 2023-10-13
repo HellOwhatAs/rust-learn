@@ -3,6 +3,7 @@ mod common_programming_concepts;
 mod ownership;
 mod structs;
 mod enums;
+mod packages_crates_and_modules;
 
 fn main() {
     println!("Hello World!");
@@ -10,5 +11,6 @@ fn main() {
     // common_programming_concepts::main();
     // ownership::main();
     // structs::main();
-    enums::main();
+    // enums::main();
+    packages_crates_and_modules::main();
 }
