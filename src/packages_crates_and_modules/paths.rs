@@ -1,0 +1,1 @@
+pub use super::modules::fibonacci as fib_from_super;
