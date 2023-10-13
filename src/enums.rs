@@ -19,7 +19,12 @@ fn defining() {
 }
 
 fn matchs() {
-
+    match 100 {
+        x => {
+            let y = x;
+            println!("{}", y);
+        }
+    }
 }
 
 #[allow(dead_code)]
