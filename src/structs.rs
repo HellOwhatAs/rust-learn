@@ -34,18 +34,31 @@ fn defining_structs() {
 }
 
 fn example_structs() {
-    // struct cuboid<T> {
-    //     x: T, y: T, z: T
-    // }
-    // impl<T> cuboid<T> where for<'a> T: std::ops::Mul<&'a T, Output = T>
-    // {
-    //     fn new(x: T, y: T, z: T) -> cuboid<T> {
-    //         cuboid {x, y, z}
-    //     }
-    //     fn volume(&self) {
-    //         let c = (&self.x * &self.y);
-    //     }
-    // }
+    mod cc{
+        pub struct Cuboid<T: Copy> {
+            pub x: T,
+            pub y: T,
+            pub z: T
+        }
+        impl<T: Copy + std::ops::Mul<T, Output = T>> Cuboid<T> {
+            pub fn new(x: T, y: T, z: T) -> Cuboid<T> {
+                Cuboid { x, y, z }
+            }
+            pub fn volume(&self) -> T {
+                self.x * self.y * self.z
+            }
+        }
+        impl<T: std::fmt::Display + Copy> std::fmt::Display for Cuboid<T> {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                write!(f, "Cuboid<{}>{{x: {}, y: {}, z: {}}}", std::any::type_name::<T>(), self.x, self.y, self.z)
+            }
+        }
+    }
+    use cc::Cuboid;
+    let x = Cuboid::new(10.3, 20.5, 30.);
+    let y = Cuboid::new(1, 2, 3);
+    println!("{}, {}, {}, {}, {}", x, x.volume(), x.x, x.y, x.z);
+    println!("{}, {}", y, y.volume());
 }
 
 #[allow(dead_code)]
