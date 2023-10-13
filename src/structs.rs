@@ -35,20 +35,20 @@ fn defining_structs() {
 
 fn example_structs() {
     mod cc{
-        pub struct Cuboid<T: Copy> {
+        pub struct Cuboid<T> {
             pub x: T,
             pub y: T,
             pub z: T
         }
-        impl<T: Copy + std::ops::Mul<T, Output = T>> Cuboid<T> {
+        impl<T: Clone + for<'a> std::ops::Mul<&'a T, Output = T>> Cuboid<T> {
             pub fn new(x: T, y: T, z: T) -> Cuboid<T> {
                 Cuboid { x, y, z }
             }
             pub fn volume(&self) -> T {
-                self.x * self.y * self.z
+                self.x.clone() * &self.y * &self.z
             }
         }
-        impl<T: std::fmt::Display + Copy> std::fmt::Display for Cuboid<T> {
+        impl<T: std::fmt::Display> std::fmt::Display for Cuboid<T> {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 write!(f, "Cuboid<{}>{{x: {}, y: {}, z: {}}}", std::any::type_name::<T>(), self.x, self.y, self.z)
             }
