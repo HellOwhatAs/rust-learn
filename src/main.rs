@@ -7,6 +7,7 @@ mod packages_crates_and_modules;
 mod common_collections;
 mod error_handling;
 mod generics;
+mod testing;
 
 fn main() {
     println!("Hello World!");
@@ -18,5 +19,6 @@ fn main() {
     // packages_crates_and_modules::main();
     // common_collections::main();
     // error_handling::main();
-    generics::main();
+    // generics::main();
+    testing::main();
 }
