@@ -8,6 +8,7 @@ mod common_collections;
 mod error_handling;
 mod generics;
 mod testing;
+mod io_project;
 
 fn main() {
     println!("Hello World!");
@@ -20,5 +21,6 @@ fn main() {
     // common_collections::main();
     // error_handling::main();
     // generics::main();
-    testing::main();
+    // testing::main();
+    io_project::main();
 }
