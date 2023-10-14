@@ -36,6 +36,7 @@ fn recoverable() {
     }
 }
 
+#[allow(dead_code)]
 pub fn main() {
     recoverable();
 }
