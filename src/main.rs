@@ -10,6 +10,7 @@ mod generics;
 mod testing;
 mod io_project;
 mod functional_features;
+mod more_about_cargo;
 
 fn main() {
     println!("Hello World!");
@@ -24,5 +25,6 @@ fn main() {
     // generics::main();
     // testing::main();
     // io_project::main();
-    functional_features::main();
+    // functional_features::main();
+    more_about_cargo::main();
 }
