@@ -9,6 +9,7 @@ mod error_handling;
 mod generics;
 mod testing;
 mod io_project;
+mod functional_features;
 
 fn main() {
     println!("Hello World!");
@@ -22,5 +23,6 @@ fn main() {
     // error_handling::main();
     // generics::main();
     // testing::main();
-    io_project::main();
+    // io_project::main();
+    functional_features::main();
 }

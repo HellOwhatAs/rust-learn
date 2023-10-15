@@ -26,6 +26,7 @@ fn output(indent: usize, results: Vec<(usize, String, &str)>) {
     }
 }
 
+#[allow(dead_code)]
 pub fn main() {
     let (query, file_path) = match input_argv(std::env::args()) {
         Ok(result) => result,
