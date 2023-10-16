@@ -11,6 +11,7 @@ mod testing;
 mod io_project;
 mod functional_features;
 mod more_about_cargo;
+mod smart_pointers;
 
 fn main() {
     println!("Hello World!");
@@ -26,5 +27,6 @@ fn main() {
     // testing::main();
     // io_project::main();
     // functional_features::main();
-    more_about_cargo::main();
+    // more_about_cargo::main();
+    smart_pointers::main();
 }
