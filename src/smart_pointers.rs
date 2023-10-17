@@ -198,13 +198,9 @@ fn reference_cycles() {
 
             let mut p = a.clone();
             for _ in 0..10 {
-                match &p.clone().borrow().next {
-                    Some(strong_next) => {
-                        println!("The strong-next of {} is {}", p.borrow().val, strong_next.borrow().val);
-                        p = strong_next.clone();
-                    },
-                    None => {},
-                }
+                let next = p.borrow().next.clone().unwrap();
+                println!("The strong-next of {} is {}", p.borrow().val, next.borrow().val);
+                p = next;
             }
         }
         println!("See? A and B never dropped!!");
@@ -226,15 +222,9 @@ fn reference_cycles() {
         
         let mut p = std::rc::Rc::downgrade(&d);
         for _ in 0..10 {
-            // emm... but why?
-            match &p.upgrade().unwrap().borrow().next {
-                Some(weak_next) => {
-                    let next = weak_next.upgrade().unwrap();
-                    println!("The weak-next of {} is {}", p.upgrade().unwrap().borrow().val, next.borrow().val);
-                    p = std::rc::Rc::downgrade(&next);
-                }
-                None => {}
-            }
+            let next = p.upgrade().unwrap().borrow().next.clone().unwrap();
+            println!("The weak-next of {} is {}", p.upgrade().unwrap().borrow().val, next.upgrade().unwrap().borrow().val);
+            p = next;
         }
     }
 }
