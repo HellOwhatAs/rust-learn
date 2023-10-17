@@ -12,6 +12,7 @@ mod io_project;
 mod functional_features;
 mod more_about_cargo;
 mod smart_pointers;
+mod concurrency;
 
 fn main() {
     println!("Hello World!");
@@ -28,5 +29,6 @@ fn main() {
     // io_project::main();
     // functional_features::main();
     // more_about_cargo::main();
-    smart_pointers::main();
+    // smart_pointers::main();
+    concurrency::main();
 }
