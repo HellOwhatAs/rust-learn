@@ -14,6 +14,7 @@ mod more_about_cargo;
 mod smart_pointers;
 mod concurrency;
 mod oop;
+mod patterns;
 
 fn main() {
     println!("Hello World!");
@@ -32,5 +33,6 @@ fn main() {
     // more_about_cargo::main();
     // smart_pointers::main();
     // concurrency::main();
-    oop::main();
+    // oop::main();
+    patterns::main();
 }
