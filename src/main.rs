@@ -15,6 +15,7 @@ mod smart_pointers;
 mod concurrency;
 mod oop;
 mod patterns;
+mod advanced_features;
 
 fn main() {
     println!("Hello World!");
@@ -34,5 +35,6 @@ fn main() {
     // smart_pointers::main();
     // concurrency::main();
     // oop::main();
-    patterns::main();
+    // patterns::main();
+    advanced_features::main();
 }
