@@ -187,6 +187,24 @@ fn advanced_traits() {
 }
 
 fn advanced_types() {
+    {
+        type I32ptr = Option<std::rc::Rc<std::cell::RefCell<i32>>>;
+        fn swap_i32ptr(a: &I32ptr, b: &I32ptr) {
+            if let (Some(a1), Some(b1)) = (a.clone(), b.clone()) {
+                let mut a2 = a1.borrow_mut();
+                let mut b2 = b1.borrow_mut();
+                std::mem::swap(&mut *a2, &mut *b2);
+            }
+        }
+        let a = Some(std::rc::Rc::new(std::cell::RefCell::new(123)));
+        let b = Some(std::rc::Rc::new(std::cell::RefCell::new(456)));
+        println!("{:?}, {:?}", a, b);
+        swap_i32ptr(&a, &b);
+        println!("{:?}, {:?}", a, b);
+    }
+}
+
+fn advanced_functions_and_closures() {
 
 }
 
@@ -195,4 +213,5 @@ pub fn main() {
     unsafe_rust();
     advanced_traits();
     advanced_types();
+    advanced_functions_and_closures();
 }
