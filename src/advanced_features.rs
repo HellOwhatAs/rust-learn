@@ -205,7 +205,45 @@ fn advanced_types() {
 }
 
 fn advanced_functions_and_closures() {
+    {
+        fn fn_add1<T: std::ops::Add<i32, Output = T>>(x: T) -> T {
+            x + 1
+        }
+        let add1 = fn_add1;
+        let add2 = |x: i32| x + 2;
+        fn twice(func: impl Fn(i32) -> i32) -> impl Fn(i32) -> i32 {
+            move |x| func(func(x))
+        }
+        println!("{}", twice(add2)(twice(add1)(10)));
+    }
+    {
+        fn return_closure() -> impl Fn(i32) -> i32 {
+            |x| x + 1
+        }
+        let tmp = return_closure();
+        println!("{}", tmp(20));
+    }
+}
 
+fn macros() {
+    {
+        #[macro_export]
+        macro_rules! join {
+            (($sep: expr, $l: expr, $r: expr), $($x: expr),*) => {
+                concat!($l, $($x, $sep,)* $r)
+            };
+            ($sep: expr, $($x: expr),*) => {
+                concat!($($x, $sep,)*)
+            };
+        }
+        let tmp = join!((", ", '[', ']'), 2, 3, 4, 5);
+        println!("{}", tmp);
+        let tmp = join!(", ", 2, 3, 4, 5);
+        println!("{}", tmp);
+    }
+    {
+        
+    }
 }
 
 #[allow(dead_code)]
@@ -214,4 +252,5 @@ pub fn main() {
     advanced_traits();
     advanced_types();
     advanced_functions_and_closures();
+    macros();
 }
