@@ -1,4 +1,5 @@
 pub mod book2txt;
+pub mod literal_json;
 
 #[allow(dead_code)]
 pub fn parse_book_test() {
