@@ -16,6 +16,7 @@ mod concurrency;
 mod oop;
 mod patterns;
 mod advanced_features;
+mod web_server;
 
 fn main() {
     println!("Hello World!");
@@ -36,5 +37,6 @@ fn main() {
     // concurrency::main();
     // oop::main();
     // patterns::main();
-    advanced_features::main();
+    // advanced_features::main();
+    web_server::main();
 }
