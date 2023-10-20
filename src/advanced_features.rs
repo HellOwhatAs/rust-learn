@@ -242,7 +242,7 @@ fn macros() {
         println!("{}", tmp);
     }
     {
-        
+        // proc macro ... 
     }
 }
 
