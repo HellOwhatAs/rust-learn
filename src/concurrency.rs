@@ -63,22 +63,26 @@ fn shared_state() {
         println!("{}", m.lock().unwrap());
     }
     {
-        use std::thread;
+        use threadpool::ThreadPool;
         use std::sync::Arc;
         let counter = Arc::new(Mutex::new(0 as u128));
-        let mut ts = vec![];
-        let n: u128 = 100;
+        let pool = ThreadPool::new(num_cpus::get());
         let timer = std::time::Instant::now();
-        for i in 1..=n {
+        use crate::packages_crates_and_modules::modules::fibonacci::fib;
+        for i in 0..50000 {
             let ref_counter = counter.clone();
-            let t = thread::spawn(move || {
+            pool.execute(move || {
+                let mut tmp = 0;
+                for i in 0..1000 {
+                    tmp += fib(i / 10 as u128);
+                }
+                tmp += i * i;
                 let mut m = ref_counter.lock().unwrap();
-                *m += i;
+                *m += tmp;
             });
-            ts.push(t);
         }
-        ts.into_iter().map(|t|{t.join().unwrap()}).count();
-        println!("{}, {}", counter.lock().unwrap(), timer.elapsed().as_nanos());
+        pool.join();
+        println!("pool\t{}\t{}", counter.lock().unwrap(), timer.elapsed().as_nanos());
     }
 }
 
