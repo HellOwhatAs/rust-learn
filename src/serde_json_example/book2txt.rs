@@ -1,15 +1,50 @@
-pub fn book2txt<P: AsRef<std::path::Path>>(input: P, output: P) {
+#[allow(dead_code)]
+pub fn parse_book(input: &str) -> Option<Vec<(String, Vec<String>)>> {
+    let v: serde_json::Value = serde_json::from_str(input).expect("invalid json");
+    let mut s = Vec::new();
+    if let serde_json::Value::Array(arr) = v {
+        for cpt in arr.into_iter() {
+            if let serde_json::Value::Array(mut cpt) = cpt {
+                let cptlines = cpt.pop()?;
+                let cptname = cpt.pop()?;
+                if let (serde_json::Value::String(cptname), serde_json::Value::Array(cptlines)) = (cptname, cptlines) {
+                    let cptlines: Vec<String> = cptlines.into_iter().filter_map(
+                        |elem| if let serde_json::Value::String(elem) = elem { Some(elem) } else { None }).collect();
+                    s.push((cptname, cptlines));
+                } else {
+                    return None;
+                }
+            } else {
+                return None;
+            }
+        }
+        return Some(s);
+    } else {
+        return None;
+    }
+}
+
+#[allow(dead_code)]
+pub fn parse_book2(input: &str) -> Option<Vec<(String, Vec<String>)>> {
+    use serde_derive::Deserialize;
+    #[derive(Deserialize)]
+    struct Cpt {
+        cptname: String,
+        cptlines: Vec<String>
+    }
+    let res: Vec<Cpt> = serde_json::from_str(input).ok()?;
+    Some(res.into_iter().map(|x| (x.cptname, x.cptlines)).collect())
+}
+
+#[allow(dead_code)]
+pub fn book2txt(book: &Vec<(String, Vec<String>)>) -> Option<String> {
     use std::fmt::Write;
-    let content = std::fs::read_to_string(input).expect("failed to read");
-    let v: serde_json::Value = serde_json::from_str(&content).expect("invalid json");
-    let mut s = String::new();
-    for cpt in v.as_array().expect("invalid book format") {
-        let cptname = cpt[0].as_str().expect("invalid book format");
-        let cptlines = cpt[1].as_array().expect("invalid book format");
-        writeln!(s, "{}", cptname).unwrap();
+    let mut res = String::new();
+    for (cptname, cptlines) in book.iter() {
+        writeln!(res, "{}", cptname).ok()?;
         for line in cptlines {
-            writeln!(s, "{}", line.as_str().expect("invalid book format")).unwrap();
+            writeln!(res, "{}", line).ok()?;
         }
     }
-    std::fs::write(output, s).expect("failed to write");
+    Some(res)
 }
