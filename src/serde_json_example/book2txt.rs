@@ -26,14 +26,8 @@ pub fn parse_book(input: &str) -> Option<Vec<(String, Vec<String>)>> {
 
 #[allow(dead_code)]
 pub fn parse_book2(input: &str) -> Option<Vec<(String, Vec<String>)>> {
-    use serde_derive::Deserialize;
-    #[derive(Deserialize)]
-    struct Cpt {
-        cptname: String,
-        cptlines: Vec<String>
-    }
-    let res: Vec<Cpt> = serde_json::from_str(input).ok()?;
-    Some(res.into_iter().map(|x| (x.cptname, x.cptlines)).collect())
+    let res: Vec<(String, Vec<String>)> = serde_json::from_str(input).ok()?;
+    Some(res)
 }
 
 #[allow(dead_code)]
