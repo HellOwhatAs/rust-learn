@@ -1,3 +1,5 @@
+mod syntax_extensions;
+
 fn main() {
-    println!("Hello World!");
+    syntax_extensions::main();
 }
